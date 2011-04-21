@@ -41,6 +41,7 @@ var Mustache = function() {
         }
       }
 
+      template = this.render_code(template);
       template = this.render_pragmas(template);
       var html = this.render_section(template, context, partials);
       if(in_recursion) {
@@ -57,6 +58,22 @@ var Mustache = function() {
       if(line != "") {
         this.buffer.push(line);
       }
+    },
+    
+    /*
+      Executes code sections {{* }}
+    */
+    render_code: function(template) {
+      // no 
+      if(!this.includes("*", template)) {
+        return template;
+      }
+
+      var that = this;
+      var regex = new RegExp(this.otag + "\\*\\s*(.+?)\\s*" + this.ctag, "mg");
+      return template.replace(regex, function(match, code, options) {
+        return eval(code);
+      });
     },
 
     /*

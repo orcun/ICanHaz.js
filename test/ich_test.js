@@ -98,4 +98,18 @@ test("refresh should empty then grab new", function () {
     equal(ich.hasOwnProperty('flint'), false, "flint template should be gone");
 });
 
+test("renders evaluated code sections", function(){
+    ich.addTemplate('code1', '{{*(function(){return "<span>test</span>";})()}}');
+    var result = ich.code1({});
+    equal(result.dom[0].outerHTML, "<span>test</span>");
+});
+
+test("evaluates code sections at each render", function(){
+    window.code2i = 0;
+    ich.addTemplate('code2', '{{*(function(){return "<span>"+ code2i++ +"</span>";})()}}');
+    for(var i = 0; i < 3; i++) {
+	var result = ich.code2({});
+	equal(result.dom[0].innerHTML, i);
+    }
+});
 
