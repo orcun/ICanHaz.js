@@ -128,7 +128,7 @@ var Mustache = function() {
 
       var that = this;
       // CSW - Added "+?" so it finds the tighest bound, not the widest
-      var regex = new RegExp(this.otag + "(\\^|\\#)\\s*(.+)\\s*" + this.ctag +
+      var regex = new RegExp(this.otag + "(\\^|\\#)\\s*(.*)\\s*" + this.ctag +
               "\n*([\\s\\S]+?)" + this.otag + "\\/\\s*\\2\\s*" + this.ctag +
               "\\s*", "mg");
 
@@ -233,6 +233,9 @@ var Mustache = function() {
     */
     find: function(name, context) {
       name = this.trim(name);
+      if (name == "") {
+        return context;
+      }
 
       // Checks whether a value is thruthy or false or 0
       function is_kinda_truthy(bool) {

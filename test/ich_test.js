@@ -98,6 +98,12 @@ test("refresh should empty then grab new", function () {
     equal(ich.hasOwnProperty('flint'), false, "flint template should be gone");
 });
 
+test("renders context items", function(){
+    ich.addTemplate('listnames', '<ul>{{#}}<li>{{name}}</li>{{/}}</ul>');
+    var result = ich.listnames([{name:"1"}, {name:"2"}]);
+    equal(result.dom[0].outerHTML, "<ul><li>1</li><li>2</li></ul>");
+});
+
 test("renders evaluated code sections", function(){
     ich.addTemplate('code1', '{{*(function(){return "<span>test</span>";})()}}');
     var result = ich.code1({});
